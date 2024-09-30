@@ -50,4 +50,25 @@ router.post('/:id/deposit', async (req, res) => {
   }
 });
 
+// 4. Realizar o cadastro de um novo Profile
+router.post('/', async (req, res) => {
+  try {
+    const { firstName, lastName, profession, balance, type } = req.body;
+    const newProfile = await Profile.create({ firstName, lastName, profession, balance, type });
+    res.status(201).json(newProfile);
+  } catch (err) {
+    res.status(500).json({ error: 'Ocorreu um erro ao criar o perfil' });
+  }
+});
+
+// 5. Retornar todos os Jobs de um Contract
+router.get('/:id/jobs', async (req, res) => {
+  try {
+    const jobs = await Job.findAll({ where: { contractId: req.params.id } });
+    res.json(jobs);
+  } catch (err) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar os jobs' });
+  }
+});
+
 module.exports = router;
